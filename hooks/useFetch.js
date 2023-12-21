@@ -14,7 +14,7 @@ const useFetch = (endpoint) => {
             num_pages: '1'
         },
         headers: {
-            'X-RapidAPI-Key': '912a3265b7msh4ced451a0e77ec4p14c8f5jsnf3689fe16d77',
+            'X-RapidAPI-Key': '',
             'X-RapidAPI-Host': 'jsearch.p.rapidapi.com'
         }
     };
