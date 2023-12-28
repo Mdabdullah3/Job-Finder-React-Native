@@ -1,14 +1,29 @@
-import React from 'react'
-import { View, Text } from 'react-native'
+import React from "react";
+import { View, Text, FlatList, TouchableOpacity } from "react-native";
 
-import styles from './tabs.style'
+import styles from "./tabs.style";
 
-const Tabs = () => {
+const TabButton = ({ name, activeTabs, onhandleSearchType }) => {
+  <TouchableOpacity>
+    <Text>{name}</Text>
+  </TouchableOpacity>;
+};
+
+const Tabs = ({ tab, activeTabs, setActiveTabs }) => {
   return (
-    <View>
-      <Text>Tabs</Text>
+    <View style={styles.container}>
+      <FlatList
+        data={tab}
+        renderItem={({ item }) => (
+          <TabButton
+            name={item}
+            activeTabs={activeTabs}
+            onhandleSearchType={() => setActiveTabs(item)}
+          />
+        )}
+      />
     </View>
-  )
-}
+  );
+};
 
-export default Tabs
+export default Tabs;
