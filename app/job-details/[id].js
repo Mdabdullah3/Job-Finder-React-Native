@@ -6,20 +6,52 @@ import { COLORS, SIZES, icons } from '../../constants';
 import ScreenHeaderBtn from '../../components/common/header/ScreenHeaderBtn';
 import Company from '../../components/jobdetails/company/Company';
 import Tabs from '../../components/jobdetails/tabs/Tabs';
+import About from '../../components/jobdetails/about/About';
+import Specifics from '../../components/jobdetails/specifics/Specifics';
+import Footer from '../../components/jobdetails/footer/Footer';
+const tab = ["About", "Qualifications", "Responsibilities"]
 
 const JobDetails = () => {
     const params = useGlobalSearchParams()
+    const [activeTabs, setActiveTabs] = useState(tab[0])
+
     const router = useRouter()
     const { data, isLoading, error, refetch } = useFetch('job-details', {
         job_id: params.id
     })
-    const tabs = ["About", "Qualifications", "Responsibility"]
 
     const [refreshing, setRefreshing] = useState(false)
     const onRefresh = () => {
 
     }
-    const [activeTabs, setActiveTabs] = useState(tabs[0])
+
+    const displayTabContent = () => {
+        switch (activeTabs) {
+            case "Qualifications":
+                return (
+                    <Specifics
+                        title='Qualifications'
+                        points={data[0].job_highlights?.Qualifications ?? ["N/A"]}
+                    />
+                );
+
+            case "About":
+                return (
+                    <About info={data[0].job_description ?? "No data provided"} />
+                );
+
+            case "Responsibilities":
+                return (
+                    <Specifics
+                        title='Responsibilities'
+                        points={data[0].job_highlights?.Responsibilities ?? ["N/A"]}
+                    />
+                );
+
+            default:
+                return null;
+        }
+    };
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
             <Stack.Screen options={{
@@ -54,11 +86,14 @@ const JobDetails = () => {
                                 companyName={data[0].employer_name}
                                 location={data[0].job_country}
                             />
-                            <Tabs tab={tabs} activeTabs={activeTabs} setActiveTabs={setActiveTabs} />
+                            <Tabs tab={tab} activeTabs={activeTabs} setActiveTabs={setActiveTabs} />
+                            {displayTabContent()}
+
                         </View>
                     )
                 }
             </ScrollView>
+            <Footer url={data[0]?.job_google_link ?? 'https://careers.google.com/jobs/results'} />
         </SafeAreaView>
 
     );
